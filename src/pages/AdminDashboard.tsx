@@ -274,7 +274,7 @@ const OrdersTab = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("orders")
-        .select("*, order_items(*), profiles!orders_user_id_fkey(full_name)")
+        .select("*, order_items(*)")
         .order("created_at", { ascending: false });
       if (error) throw error;
       return data;
