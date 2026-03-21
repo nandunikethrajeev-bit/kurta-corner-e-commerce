@@ -4,7 +4,7 @@ import { SlidersHorizontal, X } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
-import { products } from "@/data/products";
+import { useProducts } from "@/hooks/useProducts";
 
 const categories = ["all", "men", "women", "kids", "ethnic"] as const;
 const priceRanges = [
@@ -22,28 +22,18 @@ const Products = () => {
   const [priceRange, setPriceRange] = useState(0);
   const [mobileFilters, setMobileFilters] = useState(false);
 
+  const { data: products = [], isLoading } = useProducts({ category: categoryParam, search });
+
   const setCategory = (cat: string) => {
-    if (cat === "all") {
-      searchParams.delete("category");
-    } else {
-      searchParams.set("category", cat);
-    }
+    if (cat === "all") searchParams.delete("category");
+    else searchParams.set("category", cat);
     setSearchParams(searchParams);
   };
 
   const filtered = useMemo(() => {
-    let result = products;
-    if (categoryParam !== "all") {
-      result = result.filter((p) => p.category === categoryParam);
-    }
-    if (search) {
-      const q = search.toLowerCase();
-      result = result.filter((p) => p.name.toLowerCase().includes(q) || p.description.toLowerCase().includes(q));
-    }
     const { min, max } = priceRanges[priceRange];
-    result = result.filter((p) => p.price >= min && p.price <= max);
-    return result;
-  }, [categoryParam, search, priceRange]);
+    return products.filter((p) => Number(p.price) >= min && Number(p.price) <= max);
+  }, [products, priceRange]);
 
   const FilterPanel = () => (
     <div className="space-y-6">
@@ -86,7 +76,6 @@ const Products = () => {
     <>
       <Header />
       <main className="container py-8 min-h-screen">
-        {/* Search */}
         <div className="mb-8 animate-reveal-up">
           <input
             type="text"
@@ -98,12 +87,10 @@ const Products = () => {
         </div>
 
         <div className="flex gap-8">
-          {/* Desktop filters */}
           <aside className="hidden md:block w-56 shrink-0 animate-reveal-up">
             <FilterPanel />
           </aside>
 
-          {/* Mobile filter toggle */}
           <button
             className="md:hidden fixed bottom-6 right-6 z-40 bg-primary text-primary-foreground p-3.5 rounded-full shadow-lg active:scale-95 transition-transform"
             onClick={() => setMobileFilters(true)}
@@ -111,7 +98,6 @@ const Products = () => {
             <SlidersHorizontal className="w-5 h-5" />
           </button>
 
-          {/* Mobile filter drawer */}
           {mobileFilters && (
             <div className="md:hidden fixed inset-0 z-50 bg-foreground/40 animate-fade-in" onClick={() => setMobileFilters(false)}>
               <div className="absolute right-0 top-0 bottom-0 w-72 bg-background p-6 overflow-y-auto" onClick={(e) => e.stopPropagation()}>
@@ -124,26 +110,31 @@ const Products = () => {
             </div>
           )}
 
-          {/* Products grid */}
           <div className="flex-1">
-            <p className="text-sm text-muted-foreground mb-4">{filtered.length} product{filtered.length !== 1 ? "s" : ""}</p>
-            {filtered.length === 0 ? (
-              <div className="text-center py-20">
-                <p className="text-muted-foreground">No products match your filters.</p>
-                <button onClick={() => { setSearch(""); setPriceRange(0); setCategory("all"); }} className="mt-3 text-sm text-accent underline">
-                  Clear all filters
-                </button>
-              </div>
+            {isLoading ? (
+              <div className="text-center py-20 text-muted-foreground animate-pulse">Loading products...</div>
             ) : (
-              <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                {filtered.map((product, i) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    className={`animate-reveal-up stagger-${Math.min(i + 1, 5)}`}
-                  />
-                ))}
-              </div>
+              <>
+                <p className="text-sm text-muted-foreground mb-4">{filtered.length} product{filtered.length !== 1 ? "s" : ""}</p>
+                {filtered.length === 0 ? (
+                  <div className="text-center py-20">
+                    <p className="text-muted-foreground">No products match your filters.</p>
+                    <button onClick={() => { setSearch(""); setPriceRange(0); setCategory("all"); }} className="mt-3 text-sm text-accent underline">
+                      Clear all filters
+                    </button>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                    {filtered.map((product, i) => (
+                      <ProductCard
+                        key={product.id}
+                        product={product}
+                        className={`animate-reveal-up stagger-${Math.min(i + 1, 5)}`}
+                      />
+                    ))}
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
