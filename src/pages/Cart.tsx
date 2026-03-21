@@ -23,49 +23,41 @@ const Cart = () => {
           </div>
         ) : (
           <div className="grid lg:grid-cols-3 gap-8 animate-reveal-up">
-            {/* Items */}
             <div className="lg:col-span-2 space-y-4">
-              {items.map((item) => (
-                <div key={`${item.product.id}-${item.size}`} className="flex gap-4 p-4 bg-card rounded-lg border border-border">
-                  <Link to={`/product/${item.product.id}`} className="w-24 h-32 rounded overflow-hidden shrink-0">
-                    <img src={item.product.images[0]} alt={item.product.name} className="w-full h-full object-cover" />
-                  </Link>
-                  <div className="flex-1 min-w-0">
-                    <Link to={`/product/${item.product.id}`} className="font-medium text-sm leading-snug line-clamp-2 hover:text-accent transition-colors">
-                      {item.product.name}
+              {items.map((item) => {
+                const mainImage = item.product.images?.[0] || "/placeholder.svg";
+                return (
+                  <div key={`${item.product.id}-${item.size}`} className="flex gap-4 p-4 bg-card rounded-lg border border-border">
+                    <Link to={`/product/${item.product.id}`} className="w-24 h-32 rounded overflow-hidden shrink-0">
+                      <img src={mainImage} alt={item.product.name} className="w-full h-full object-cover" />
                     </Link>
-                    <p className="text-xs text-muted-foreground mt-1">Size: {item.size}</p>
-                    <p className="font-semibold text-sm mt-2">₹{item.product.price.toLocaleString("en-IN")}</p>
+                    <div className="flex-1 min-w-0">
+                      <Link to={`/product/${item.product.id}`} className="font-medium text-sm leading-snug line-clamp-2 hover:text-accent transition-colors">
+                        {item.product.name}
+                      </Link>
+                      <p className="text-xs text-muted-foreground mt-1">Size: {item.size}</p>
+                      <p className="font-semibold text-sm mt-2">₹{Number(item.product.price).toLocaleString("en-IN")}</p>
 
-                    <div className="flex items-center justify-between mt-3">
-                      <div className="flex items-center gap-1 border border-border rounded-sm">
-                        <button
-                          onClick={() => updateQuantity(item.product.id, item.size, item.quantity - 1)}
-                          className="p-1.5 hover:bg-muted transition-colors active:scale-90"
-                        >
-                          <Minus className="w-3.5 h-3.5" />
-                        </button>
-                        <span className="w-8 text-center text-sm font-medium tabular-nums">{item.quantity}</span>
-                        <button
-                          onClick={() => updateQuantity(item.product.id, item.size, item.quantity + 1)}
-                          className="p-1.5 hover:bg-muted transition-colors active:scale-90"
-                        >
-                          <Plus className="w-3.5 h-3.5" />
+                      <div className="flex items-center justify-between mt-3">
+                        <div className="flex items-center gap-1 border border-border rounded-sm">
+                          <button onClick={() => updateQuantity(item.product.id, item.size, item.quantity - 1)} className="p-1.5 hover:bg-muted transition-colors active:scale-90">
+                            <Minus className="w-3.5 h-3.5" />
+                          </button>
+                          <span className="w-8 text-center text-sm font-medium tabular-nums">{item.quantity}</span>
+                          <button onClick={() => updateQuantity(item.product.id, item.size, item.quantity + 1)} className="p-1.5 hover:bg-muted transition-colors active:scale-90">
+                            <Plus className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                        <button onClick={() => removeItem(item.product.id, item.size)} className="p-1.5 text-muted-foreground hover:text-destructive transition-colors active:scale-90">
+                          <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
-                      <button
-                        onClick={() => removeItem(item.product.id, item.size)}
-                        className="p-1.5 text-muted-foreground hover:text-destructive transition-colors active:scale-90"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
-            {/* Summary */}
             <div className="bg-card border border-border rounded-lg p-6 h-fit sticky top-24">
               <h2 className="font-display text-lg font-semibold mb-4">Order Summary</h2>
               <div className="space-y-2 text-sm">

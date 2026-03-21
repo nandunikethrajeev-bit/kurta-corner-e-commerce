@@ -1,8 +1,18 @@
-import { products } from "@/data/products";
 import ProductCard from "./ProductCard";
+import { useProducts } from "@/hooks/useProducts";
 
 const FeaturedProducts = () => {
-  const featured = products.filter((p) => p.badge);
+  const { data: featured = [], isLoading } = useProducts({ featured: true });
+
+  if (isLoading) {
+    return (
+      <section className="container py-20">
+        <div className="text-center text-muted-foreground animate-pulse">Loading featured products...</div>
+      </section>
+    );
+  }
+
+  if (featured.length === 0) return null;
 
   return (
     <section className="container py-20">
