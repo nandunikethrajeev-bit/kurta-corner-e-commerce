@@ -56,7 +56,7 @@ const ProductDetail = () => {
     toast({ title: "Added to cart", description: `${product.name} (${selectedSize})` });
   };
 
-  const mainImage = product.image_url || "/placeholder.svg";
+
 
   return (
     <>

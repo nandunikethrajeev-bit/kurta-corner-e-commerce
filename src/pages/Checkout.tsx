@@ -45,7 +45,11 @@ const Checkout = () => {
         items: items.map((item) => ({
           product_id: item.product.id,
           product_name: item.product.name,
+<<<<<<< HEAD
           product_image: item.product.image_url || null,
+=======
+          product_image: item.product.images?.[0] || null,
+>>>>>>> a8542bc21336867072c7d765f7d8737c759c3039
           size: item.size,
           quantity: item.quantity,
           price: Number(item.product.price),
