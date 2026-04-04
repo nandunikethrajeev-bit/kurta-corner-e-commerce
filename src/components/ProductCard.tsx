@@ -9,11 +9,7 @@ const ProductCard = ({ product, className = "" }: { product: DBProduct; classNam
   const price = Number(product.price);
   const originalPrice = product.original_price ? Number(product.original_price) : null;
   const discount = originalPrice ? Math.round(((originalPrice - price) / originalPrice) * 100) : 0;
-<<<<<<< HEAD
   const mainImage = product.image_url || "/placeholder.svg";
-=======
-  const mainImage = product.images?.[0] || "/placeholder.svg";
->>>>>>> a8542bc21336867072c7d765f7d8737c759c3039
 
   return (
     <motion.div

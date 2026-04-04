@@ -250,11 +250,7 @@ export type Database = {
           created_at: string
           description: string | null
           id: string
-<<<<<<< HEAD
           image_url: string | null
-=======
-          images: string[]
->>>>>>> a8542bc21336867072c7d765f7d8737c759c3039
           is_active: boolean
           is_featured: boolean
           name: string
@@ -271,11 +267,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: string
-<<<<<<< HEAD
           image_url?: string | null
-=======
-          images?: string[]
->>>>>>> a8542bc21336867072c7d765f7d8737c759c3039
           is_active?: boolean
           is_featured?: boolean
           name: string
@@ -292,11 +284,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: string
-<<<<<<< HEAD
           image_url?: string | null
-=======
-          images?: string[]
->>>>>>> a8542bc21336867072c7d765f7d8737c759c3039
           is_active?: boolean
           is_featured?: boolean
           name?: string

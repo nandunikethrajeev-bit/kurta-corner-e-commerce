@@ -25,11 +25,7 @@ const Cart = () => {
           <div className="grid lg:grid-cols-3 gap-8 animate-reveal-up">
             <div className="lg:col-span-2 space-y-4">
               {items.map((item) => {
-<<<<<<< HEAD
                 const mainImage = item.product.image_url || "/placeholder.svg";
-=======
-                const mainImage = item.product.images?.[0] || "/placeholder.svg";
->>>>>>> a8542bc21336867072c7d765f7d8737c759c3039
                 return (
                   <div key={`${item.product.id}-${item.size}`} className="flex gap-4 p-4 bg-card rounded-lg border border-border">
                     <Link to={`/product/${item.product.id}`} className="w-24 h-32 rounded overflow-hidden shrink-0">

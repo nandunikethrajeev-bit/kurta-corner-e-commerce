@@ -155,11 +155,7 @@ const ProductsTab = ({ editingProduct, setEditingProduct, showForm, setShowForm 
           {products.map((p) => (
             <div key={p.id} className={`flex items-center gap-4 p-4 bg-card border border-border rounded-lg ${!p.is_active ? "opacity-50" : ""}`}>
               <div className="w-16 h-20 rounded bg-muted overflow-hidden shrink-0">
-<<<<<<< HEAD
                 {p.image_url && <img src={p.image_url} alt="" className="w-full h-full object-cover" />}
-=======
-                {p.images?.[0] && <img src={p.images[0]} alt="" className="w-full h-full object-cover" />}
->>>>>>> a8542bc21336867072c7d765f7d8737c759c3039
               </div>
               <div className="flex-1 min-w-0">
                 <p className="font-medium text-sm line-clamp-1">{p.name}</p>
@@ -200,11 +196,7 @@ const ProductForm = ({ product, onClose, onSaved }: { product: any; onClose: () 
     colors: product?.colors?.join(", ") || "",
     stock: product?.stock || 0,
     is_featured: product?.is_featured || false,
-<<<<<<< HEAD
     image_url: product?.image_url || "",
-=======
-    images: product?.images?.join("\n") || "",
->>>>>>> a8542bc21336867072c7d765f7d8737c759c3039
   });
   const [saving, setSaving] = useState(false);
 
@@ -222,11 +214,7 @@ const ProductForm = ({ product, onClose, onSaved }: { product: any; onClose: () 
       colors: form.colors ? form.colors.split(",").map((s: string) => s.trim()).filter(Boolean) : null,
       stock: Number(form.stock),
       is_featured: form.is_featured,
-<<<<<<< HEAD
       image_url: form.image_url ? form.image_url.trim() : null,
-=======
-      images: form.images ? form.images.split("\n").map((s: string) => s.trim()).filter(Boolean) : [],
->>>>>>> a8542bc21336867072c7d765f7d8737c759c3039
       is_active: true,
     };
 
@@ -270,11 +258,7 @@ const ProductForm = ({ product, onClose, onSaved }: { product: any; onClose: () 
         </label>
       </div>
       <textarea placeholder="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className={`${inputClass}`} rows={3} />
-<<<<<<< HEAD
       <input placeholder="Image URL" value={form.image_url} onChange={(e) => setForm({ ...form, image_url: e.target.value })} className={inputClass} />
-=======
-      <textarea placeholder="Image URLs (one per line)" value={form.images} onChange={(e) => setForm({ ...form, images: e.target.value })} className={`${inputClass}`} rows={2} />
->>>>>>> a8542bc21336867072c7d765f7d8737c759c3039
       <button type="submit" disabled={saving} className="px-6 py-2.5 bg-primary text-primary-foreground text-sm font-medium rounded-sm hover:bg-primary/90 disabled:opacity-50">
         {saving ? "Saving..." : product ? "Update Product" : "Create Product"}
       </button>
