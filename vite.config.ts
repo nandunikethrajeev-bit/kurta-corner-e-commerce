@@ -1,22 +1,30 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react-swc";
-import path from "path";
-import { componentTagger } from "lovable-tagger";
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react-swc'
+import path from 'path'
 
-// https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
-  server: {
-    host: "::",
-    port: 8080,
-    hmr: {
-      overlay: false,
-    },
-  },
-  plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
+export default defineConfig({
+  plugins: [react()],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      "@": path.resolve(new URL('.', import.meta.url).pathname, "src"),
     },
-    dedupe: ["react", "react-dom", "react/jsx-runtime", "react/jsx-dev-runtime"],
   },
-}));
+    build: {
+    outDir: 'dist',  // Output directory for the build
+    sourcemap: true,  // Enable source maps for production debugging
+    minify: 'terser',  // Use terser for minification
+    brotliSize: false, // Disable Brotli size report,
+    rollupOptions: {
+      output: {
+        entryFileNames: '[name].[hash].js',  // Naming convention for entry chunks
+        chunkFileNames: '[name].[hash].js',  // Naming convention for chunk files
+        assetFileNames: '[name].[hash][extname]', // Naming convention for asset files
+      }
+    }
+  },
+  server: {
+    port: 3000,      // Local development server port
+    open: true,      // Open the browser on server start
+    cors: true,      // Enable CORS
+  },
+});
